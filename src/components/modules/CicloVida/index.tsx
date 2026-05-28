@@ -6,16 +6,19 @@ import FunnelStage from '@/components/shared/FunnelStage'
 import ChartContainer from '@/components/shared/ChartContainer'
 import PageHeader from '@/components/shared/PageHeader'
 import { funnelStages, funnelKpisExtra, funnelConversionTimeline } from '@/data/mockData'
-import { byPeriod, filterLabel, riskAdjusted, volumeAdjusted } from '@/lib/filtering'
+import { byPeriod, filterLabel, periodScale, riskAdjusted, volumeAdjusted } from '@/lib/filtering'
 import { useFilters } from '@/hooks/useFilters'
+
+const stageMetricMap = {
+  aprobados: 'aprobacion',
+  activados: 'activacion',
+  uso: 'usoActivo',
+  cross: 'cross',
+  recupero: 'recupero',
+} as const
 
 export default function CicloVida() {
   const { filters } = useFilters()
-  const stages = funnelStages.map(stage => ({
-    ...stage,
-    customers: Math.round(volumeAdjusted(stage.customers, filters)),
-    conversionRate: stage.conversionRate ? riskAdjusted(stage.conversionRate, filters) : undefined,
-  }))
   const timeline = byPeriod(funnelConversionTimeline, filters).map(row => ({
     ...row,
     aprobacion: riskAdjusted(row.aprobacion, filters),
@@ -24,6 +27,18 @@ export default function CicloVida() {
     cross: riskAdjusted(row.cross, filters),
     recupero: riskAdjusted(row.recupero, filters),
   }))
+  const latestVisible = timeline[timeline.length - 1]
+  const scale = periodScale(filters)
+  const stages = funnelStages.map(stage => {
+    const metric = stageMetricMap[stage.id as keyof typeof stageMetricMap]
+    const visibleRate = metric ? latestVisible?.[metric] : stage.conversionRate
+
+    return {
+      ...stage,
+      customers: Math.max(1, Math.round(volumeAdjusted(stage.customers, filters) * scale)),
+      conversionRate: visibleRate ? Math.min(100, visibleRate) : undefined,
+    }
+  })
 
   return (
     <div className="animate-fade-in">
@@ -31,7 +46,7 @@ export default function CicloVida() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Funnel */}
-        <ChartContainer title="Funnel de Conversión" subtitle="Clientes por etapa" className="lg:col-span-2" minHeight={0}>
+        <ChartContainer title="Funnel de Conversión" subtitle={`Clientes por etapa - ${filters.period}`} className="lg:col-span-2" minHeight={0}>
           <div className="flex flex-col gap-2">
             {stages.map((stage, i) => (
               <div key={stage.id}>
@@ -81,7 +96,7 @@ export default function CicloVida() {
 
       {/* Evolución tasas de conversión */}
       <div className="mt-4">
-        <ChartContainer title="Evolución Tasas de Conversión" subtitle="Últimos 6 meses">
+        <ChartContainer title="Evolución Tasas de Conversión" subtitle={filterLabel(filters)}>
           <ResponsiveContainer width="100%" height={260}>
             <LineChart data={timeline} margin={{ top: 4, right: 4, left: -16, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#3A3D44" strokeOpacity={0.5} vertical={false} />

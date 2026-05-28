@@ -32,6 +32,10 @@ export function periodLimit(filters: FilterState): number {
   }
 }
 
+export function periodScale(filters: FilterState): number {
+  return periodLimit(filters) / 12
+}
+
 export function byPeriod<T>(data: T[], filters: FilterState): T[] {
   return data.slice(-periodLimit(filters))
 }

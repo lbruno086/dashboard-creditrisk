@@ -29,19 +29,20 @@ const NAV_ITEMS = [
 ] as const
 
 function ICBCLogo({ collapsed }: { collapsed: boolean }) {
+  const logoSrc = `${import.meta.env.BASE_URL}brand/icbc-logo.svg`
   if (collapsed) {
     return (
-      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white p-1.5">
-        <img src="/brand/icbc-logo.svg" alt="ICBC Argentina" className="h-auto w-full" />
+      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/95 p-1.5 shadow-sm">
+        <img src={logoSrc} alt="ICBC" className="h-auto w-full object-contain" />
       </div>
     )
   }
   return (
-    <div className="flex min-w-0 items-center gap-2 px-1">
-      <div className="flex h-9 w-[92px] flex-shrink-0 items-center rounded-lg bg-white px-2">
-        <img src="/brand/icbc-logo.svg" alt="ICBC Argentina" className="h-auto w-full" />
+    <div className="flex min-w-0 items-center gap-3 px-1">
+      <div className="flex h-8 w-[88px] flex-shrink-0 items-center justify-center rounded-md bg-white/95 px-2 py-1 shadow-sm">
+        <img src={logoSrc} alt="ICBC Argentina" className="h-full w-auto object-contain" />
       </div>
-      <div className="min-w-0">
+      <div className="min-w-0 border-l border-border-subtle pl-3">
         <div className="max-w-[142px] truncate text-sm font-semibold leading-tight text-text-primary">Credit Intelligence</div>
         <div className="max-w-[142px] truncate text-[10px] leading-tight text-text-muted">Risk Analytics Platform</div>
       </div>

@@ -115,3 +115,35 @@ export interface FilterState {
   product: Product | 'todos'
   segment: ScoreSegment | 'todos'
 }
+
+export interface ModelDecileRow {
+  decil: number
+  scoreInf: number
+  scoreSup: number
+  casos: number
+  frecuencia: number       // % sobre total
+  pctMorosos: number       // % de morosos del decil sobre total morosos
+  pctMorososAcum: number   // acumulado → llega a 100
+  tasaMora: number         // tasa de morosidad del decil
+  tasaMoraAcum: number     // tasa de morosidad acumulada (deciles 1..n)
+  lift: number             // pctMorososAcum / frecuencia acumulada
+}
+
+export interface RocPoint {
+  fpr: number   // false positive rate %
+  tpr: number   // true positive rate %
+}
+
+export interface ModelInfo {
+  id: string
+  name: string
+  tipo: string
+  fecha: string
+  auc: number
+  gini: number
+  ks: number
+  ksDecil: number
+  totalCasos: number
+  totalMorosos: number
+  tasaMoraGlobal: number
+}

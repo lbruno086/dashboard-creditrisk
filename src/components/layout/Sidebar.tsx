@@ -11,6 +11,7 @@ import {
   ChevronLeft,
   ChevronRight,
   User,
+  BrainCircuit,
 } from 'lucide-react'
 import clsx from 'clsx'
 import { alerts } from '@/data/mockData'
@@ -26,6 +27,7 @@ const NAV_ITEMS = [
   { to: '/rentabilidad', icon: DollarSign, label: 'Rentabilidad' },
   { to: '/segmentacion', icon: Users, label: 'Segmentacion' },
   { to: '/alertas', icon: Bell, label: 'Alertas & Insights', badge: criticoCount + alertaCount, badgeColor: 'amber' },
+  { to: '/modelos', icon: BrainCircuit, label: 'Modelos' },
 ] as const
 
 function ICBCLogo({ collapsed }: { collapsed: boolean }) {

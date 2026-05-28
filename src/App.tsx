@@ -10,6 +10,7 @@ import ApetitoRiesgo from '@/components/modules/ApetitoRiesgo'
 import Rentabilidad from '@/components/modules/Rentabilidad'
 import Segmentacion from '@/components/modules/Segmentacion'
 import Alertas from '@/components/modules/Alertas'
+import Modelos from '@/components/modules/Modelos'
 
 function Layout() {
   const filtersValue = useFiltersState()
@@ -32,6 +33,7 @@ function Layout() {
                 <Route path="/rentabilidad" element={<Rentabilidad />} />
                 <Route path="/segmentacion" element={<Segmentacion />} />
                 <Route path="/alertas" element={<Alertas />} />
+                <Route path="/modelos" element={<Modelos />} />
               </Routes>
             </div>
           </main>

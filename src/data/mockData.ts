@@ -11,6 +11,9 @@
   ScoreSegmentRow,
   AgeSegmentRow,
   AlertItem,
+  ModelDecileRow,
+  RocPoint,
+  ModelInfo,
 } from '@/types/creditRisk'
 
 // â”€â”€â”€ 6.1 Executive Summary KPIs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -272,4 +275,97 @@ export const alerts: AlertItem[] = [
   { id: '5', severity: 'info', title: 'Vintage Feb-2024 mejora vs. cosecha equivalente 2023', detail: 'M12: 3.5% vs 4.1% en Feb-2023.', metric: 'vintage', module: 'Calidad de Cartera', timestamp: '23/05 15:00' },
   { id: '6', severity: 'ok', title: 'NPL 90+ debajo del limite por 6 meses consecutivos', detail: '1.9% vs limite 2.5%.', metric: 'npl90', module: 'Límites de Riesgo', timestamp: '20/05 10:00' },
   { id: '7', severity: 'ok', title: 'Activacion 30d supera benchmark historico', detail: '76.0% actual vs 72.0% benchmark.', metric: 'activacion', module: 'Ciclo de Vida', timestamp: '20/05 10:00' },
+]
+
+// ─── 6.14 Modelos ─────────────────────────────────────────────────────────────
+export const modelList: ModelInfo[] = [
+  {
+    id: 'scoring_admision',
+    name: 'Scoring de Admisión',
+    tipo: 'Logistic Regression',
+    fecha: 'Nov-2023',
+    auc: 0.742,
+    gini: 0.484,
+    ks: 31.6,
+    ksDecil: 6,
+    totalCasos: 50000,
+    totalMorosos: 2500,
+    tasaMoraGlobal: 5.0,
+  },
+  {
+    id: 'scoring_comportamiento',
+    name: 'Scoring de Comportamiento',
+    tipo: 'Gradient Boosting',
+    fecha: 'Ene-2024',
+    auc: 0.781,
+    gini: 0.562,
+    ks: 38.4,
+    ksDecil: 5,
+    totalCasos: 42800,
+    totalMorosos: 1712,
+    tasaMoraGlobal: 4.0,
+  },
+]
+
+// Decile table — Scoring de Admisión
+// D1 = mejor score (menor riesgo), D10 = peor score (mayor riesgo)
+export const modelDeciles: ModelDecileRow[] = [
+  { decil: 1,  scoreInf: 785, scoreSup: 850, casos: 5000, frecuencia: 10.0, pctMorosos: 2.0,  pctMorososAcum: 2.0,  tasaMora: 1.0,  tasaMoraAcum: 1.00, lift: 0.20 },
+  { decil: 2,  scoreInf: 742, scoreSup: 784, casos: 5000, frecuencia: 10.0, pctMorosos: 3.0,  pctMorososAcum: 5.0,  tasaMora: 1.5,  tasaMoraAcum: 1.25, lift: 0.25 },
+  { decil: 3,  scoreInf: 706, scoreSup: 741, casos: 5000, frecuencia: 10.0, pctMorosos: 4.0,  pctMorososAcum: 9.0,  tasaMora: 2.0,  tasaMoraAcum: 1.50, lift: 0.30 },
+  { decil: 4,  scoreInf: 672, scoreSup: 705, casos: 5000, frecuencia: 10.0, pctMorosos: 5.0,  pctMorososAcum: 14.0, tasaMora: 2.5,  tasaMoraAcum: 1.75, lift: 0.35 },
+  { decil: 5,  scoreInf: 638, scoreSup: 671, casos: 5000, frecuencia: 10.0, pctMorosos: 7.0,  pctMorososAcum: 21.0, tasaMora: 3.5,  tasaMoraAcum: 2.10, lift: 0.42 },
+  { decil: 6,  scoreInf: 604, scoreSup: 637, casos: 5000, frecuencia: 10.0, pctMorosos: 9.0,  pctMorososAcum: 30.0, tasaMora: 4.5,  tasaMoraAcum: 2.50, lift: 0.50 },
+  { decil: 7,  scoreInf: 566, scoreSup: 603, casos: 5000, frecuencia: 10.0, pctMorosos: 12.0, pctMorososAcum: 42.0, tasaMora: 6.0,  tasaMoraAcum: 3.00, lift: 0.60 },
+  { decil: 8,  scoreInf: 524, scoreSup: 565, casos: 5000, frecuencia: 10.0, pctMorosos: 15.0, pctMorososAcum: 57.0, tasaMora: 7.5,  tasaMoraAcum: 3.56, lift: 0.71 },
+  { decil: 9,  scoreInf: 481, scoreSup: 523, casos: 5000, frecuencia: 10.0, pctMorosos: 19.0, pctMorososAcum: 76.0, tasaMora: 9.5,  tasaMoraAcum: 4.22, lift: 0.84 },
+  { decil: 10, scoreInf: 300, scoreSup: 480, casos: 5000, frecuencia: 10.0, pctMorosos: 24.0, pctMorososAcum: 100.0, tasaMora: 12.0, tasaMoraAcum: 5.00, lift: 1.00 },
+]
+
+// Decile table — Scoring de Comportamiento
+export const modelDecilesComportamiento: ModelDecileRow[] = [
+  { decil: 1,  scoreInf: 790, scoreSup: 850, casos: 4280, frecuencia: 10.0, pctMorosos: 1.4,  pctMorososAcum: 1.4,  tasaMora: 0.56, tasaMoraAcum: 0.56, lift: 0.14 },
+  { decil: 2,  scoreInf: 750, scoreSup: 789, casos: 4280, frecuencia: 10.0, pctMorosos: 2.4,  pctMorososAcum: 3.8,  tasaMora: 0.96, tasaMoraAcum: 0.76, lift: 0.19 },
+  { decil: 3,  scoreInf: 715, scoreSup: 749, casos: 4280, frecuencia: 10.0, pctMorosos: 3.6,  pctMorososAcum: 7.4,  tasaMora: 1.44, tasaMoraAcum: 0.99, lift: 0.25 },
+  { decil: 4,  scoreInf: 681, scoreSup: 714, casos: 4280, frecuencia: 10.0, pctMorosos: 5.0,  pctMorososAcum: 12.4, tasaMora: 2.00, tasaMoraAcum: 1.24, lift: 0.31 },
+  { decil: 5,  scoreInf: 647, scoreSup: 680, casos: 4280, frecuencia: 10.0, pctMorosos: 7.0,  pctMorososAcum: 19.4, tasaMora: 2.80, tasaMoraAcum: 1.55, lift: 0.39 },
+  { decil: 6,  scoreInf: 610, scoreSup: 646, casos: 4280, frecuencia: 10.0, pctMorosos: 9.6,  pctMorososAcum: 29.0, tasaMora: 3.84, tasaMoraAcum: 1.93, lift: 0.48 },
+  { decil: 7,  scoreInf: 570, scoreSup: 609, casos: 4280, frecuencia: 10.0, pctMorosos: 12.8, pctMorososAcum: 41.8, tasaMora: 5.12, tasaMoraAcum: 2.39, lift: 0.60 },
+  { decil: 8,  scoreInf: 525, scoreSup: 569, casos: 4280, frecuencia: 10.0, pctMorosos: 16.4, pctMorososAcum: 58.2, tasaMora: 6.56, tasaMoraAcum: 2.91, lift: 0.73 },
+  { decil: 9,  scoreInf: 478, scoreSup: 524, casos: 4280, frecuencia: 10.0, pctMorosos: 20.6, pctMorososAcum: 78.8, tasaMora: 8.24, tasaMoraAcum: 3.55, lift: 0.88 },
+  { decil: 10, scoreInf: 300, scoreSup: 477, casos: 4280, frecuencia: 10.0, pctMorosos: 21.2, pctMorososAcum: 100.0, tasaMora: 8.48, tasaMoraAcum: 4.00, lift: 1.00 },
+]
+
+// ROC curve — Scoring de Admisión
+export const rocCurveAdmision: RocPoint[] = [
+  { fpr: 0.0,   tpr: 0.0 },
+  { fpr: 0.9,   tpr: 2.0 },
+  { fpr: 1.9,   tpr: 5.0 },
+  { fpr: 3.1,   tpr: 9.0 },
+  { fpr: 4.7,   tpr: 14.0 },
+  { fpr: 7.1,   tpr: 21.0 },
+  { fpr: 10.5,  tpr: 30.0 },
+  { fpr: 15.3,  tpr: 42.0 },
+  { fpr: 22.0,  tpr: 57.0 },
+  { fpr: 32.1,  tpr: 76.0 },
+  { fpr: 52.6,  tpr: 90.0 },
+  { fpr: 72.4,  tpr: 97.0 },
+  { fpr: 100.0, tpr: 100.0 },
+]
+
+// ROC curve — Scoring de Comportamiento
+export const rocCurveComportamiento: RocPoint[] = [
+  { fpr: 0.0,   tpr: 0.0 },
+  { fpr: 0.6,   tpr: 1.4 },
+  { fpr: 1.5,   tpr: 3.8 },
+  { fpr: 2.8,   tpr: 7.4 },
+  { fpr: 4.5,   tpr: 12.4 },
+  { fpr: 7.0,   tpr: 19.4 },
+  { fpr: 10.4,  tpr: 29.0 },
+  { fpr: 15.1,  tpr: 41.8 },
+  { fpr: 21.4,  tpr: 58.2 },
+  { fpr: 30.2,  tpr: 78.8 },
+  { fpr: 45.8,  tpr: 92.0 },
+  { fpr: 68.3,  tpr: 98.0 },
+  { fpr: 100.0, tpr: 100.0 },
 ]

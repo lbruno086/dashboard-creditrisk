@@ -7,7 +7,7 @@ import ChartContainer from '@/components/shared/ChartContainer'
 import { scoreSegments } from '@/data/mockData'
 import { useFilters } from '@/hooks/useFilters'
 
-const SCORE_COLORS = ['#10B981', '#D71920', '#F59E0B', '#EF4444']
+const SCORE_COLORS = ['#10B981', '#F59E0B', '#F97316', '#EF4444']
 
 export default function ScoreTab() {
   const { filters } = useFilters()

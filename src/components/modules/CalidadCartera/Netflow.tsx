@@ -21,11 +21,12 @@ const buildWaterfallData = (data: typeof netflowData) => data.map(d => {
 })
 
 const consecutivePositive = (data: typeof netflowData) => {
-  let maxStreak = 0; let current = 0
-  for (const d of data) {
-    if (d.netflow > 0) { current++; maxStreak = Math.max(maxStreak, current) } else current = 0
+  let current = 0
+  for (let i = data.length - 1; i >= 0; i--) {
+    if (data[i].netflow > 0) current++
+    else break
   }
-  return maxStreak
+  return current
 }
 
 export default function Netflow() {

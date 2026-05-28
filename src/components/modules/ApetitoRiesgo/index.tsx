@@ -105,7 +105,7 @@ export default function ApetitoRiesgo() {
       </div>
 
       {/* Historical table */}
-      <ChartContainer title="Historico de Indicadores" subtitle="Ãšltim?s 6 m?ses (Dic - May)" minHeight={0}>
+      <ChartContainer title="Histórico de Indicadores" subtitle="Últimos 6 meses (Dic - May)" minHeight={0}>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
@@ -120,7 +120,7 @@ export default function ApetitoRiesgo() {
               {indicators.map(ind => (
                 <tr key={ind.id} className="border-b border-border-subtle/20 hover:bg-bg-elevated/20 transition-colors">
                   <td className="py-2 text-text-primary font-medium flex items-center gap-2">
-                    <span className={`w-1.5 h-1.5 rounded-full ${SIGNAL_BG_CLASS[ind.signal]}`} />
+                    <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: SIGNAL_COLORS[ind.signal] }} />
                     {ind.name}
                   </td>
                   {ind.trend.map((v, i) => (

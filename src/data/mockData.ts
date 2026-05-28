@@ -219,9 +219,9 @@ export const profitabilityByProduct: ProductProfitability[] = [
   { product: 'Automotriz', productKey: 'automotriz', cartera: 600, nim: 18.9, spread: 12.4, costoRiesgo: 2.1, rentabilidadNeta: 10.3 },
 ]
 export const profitabilityTotal = {
-  cartera: 4850, nim: 22.1, spread: 16.2, costoRiesgo: 4.0, rentabilidadNeta: 12.2,
+  cartera: 4850, nim: 22.0, spread: 16.1, costoRiesgo: 3.7, rentabilidadNeta: 12.2,
 }
-export const profitabilityKpis = { roa: 2.8, roe: 18.4, eficiencia: 48.2 }
+export const profitabilityKpis = { roa: 2.8, roe: 18.2, eficiencia: 48.2 }
 
 export const roaNimTimeline = [
   { mes: 'Jun-25', roa: 2.4, nim: 21.2 },
@@ -240,10 +240,10 @@ export const roaNimTimeline = [
 
 // â”€â”€â”€ 6.11 Segmentacion Score â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export const scoreSegments: ScoreSegmentRow[] = [
-  { segment: 'A', range: '>750', pctCartera: 32, pctMora: 0.9, nim: 15.2, rentabilidadNeta: 9.8 },
-  { segment: 'B', range: '650-750', pctCartera: 38, pctMora: 2.7, nim: 18.6, rentabilidadNeta: 12.1 },
-  { segment: 'C', range: '550-650', pctCartera: 22, pctMora: 6.4, nim: 22.4, rentabilidadNeta: 13.6 },
-  { segment: 'D', range: '<550', pctCartera: 8, pctMora: 13.6, nim: 26.1, rentabilidadNeta: 15.4 },
+  { segment: 'A', range: '>750', pctCartera: 32, pctMora: 0.9, nim: 15.2, rentabilidadNeta: 12.8 },
+  { segment: 'B', range: '650-750', pctCartera: 38, pctMora: 2.7, nim: 18.6, rentabilidadNeta: 14.1 },
+  { segment: 'C', range: '550-650', pctCartera: 22, pctMora: 6.4, nim: 22.4, rentabilidadNeta: 10.5 },
+  { segment: 'D', range: '<550', pctCartera: 8, pctMora: 13.6, nim: 26.1, rentabilidadNeta: 5.8 },
 ]
 
 // â”€â”€â”€ 6.12 Segmentacion Edad â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

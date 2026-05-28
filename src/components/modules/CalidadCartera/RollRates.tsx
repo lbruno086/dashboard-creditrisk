@@ -24,8 +24,8 @@ function transitionColor(from: string, to: string, value: number): string {
 
 export default function RollRates() {
   const cureRate = rollRateMatrix
-    .filter(r => r.from !== 'Al día')
-    .reduce((sum, r) => sum + (r.to['Al día'] ?? 0), 0) / (rollRateMatrix.length - 1)
+    .filter(r => r.from !== 'Al dia')
+    .reduce((sum, r) => sum + (r.to['Al dia'] ?? 0), 0) / (rollRateMatrix.length - 1)
 
   const avgForwardDeterioration = rollRateMatrix
     .filter(r => r.from !== 'Cancelado')

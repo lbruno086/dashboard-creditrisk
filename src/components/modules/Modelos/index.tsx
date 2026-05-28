@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, ReferenceLine, Area, AreaChart,
+  ResponsiveContainer, ReferenceLine, Area, ComposedChart,
 } from 'recharts'
 import clsx from 'clsx'
 import PageHeader from '@/components/shared/PageHeader'
@@ -111,10 +111,12 @@ function AucGauge({ auc }: { auc: number }) {
 
 function RocChart({ data, auc }: { data: RocPoint[]; auc: number }) {
   const color = aucColor(auc)
+  // add diagonal field (random model: tpr = fpr) to each point
+  const chartData = data.map(d => ({ ...d, diagonal: d.fpr }))
   return (
     <ChartContainer title="Curva ROC" subtitle="Sensibilidad vs (1 − Especificidad) por umbral de score">
       <ResponsiveContainer width="100%" height={260}>
-        <AreaChart data={data} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
+        <ComposedChart data={chartData} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
           <defs>
             <linearGradient id="aucGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor={color} stopOpacity={0.25} />
@@ -123,24 +125,32 @@ function RocChart({ data, auc }: { data: RocPoint[]; auc: number }) {
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke="#3A3D44" strokeOpacity={0.5} vertical={false} />
           <XAxis dataKey="fpr" type="number" domain={[0, 100]} tick={{ fontSize: 10, fill: '#64748B' }}
-            axisLine={false} tickLine={false} tickFormatter={v => `${v}%`} label={{ value: 'FPR (%)', position: 'insideBottom', offset: -2, fill: '#64748B', fontSize: 9 }} />
+            axisLine={false} tickLine={false} tickFormatter={v => `${v}%`} />
           <YAxis domain={[0, 100]} tick={{ fontSize: 10, fill: '#64748B' }} axisLine={false}
             tickLine={false} tickFormatter={v => `${v}%`} />
           <Tooltip
             contentStyle={{ background: '#26282D', border: '1px solid #3A3D44', borderRadius: '8px', fontSize: '11px', color: '#F1F5F9' }}
-            formatter={(v: number, name: string) => [`${v.toFixed(1)}%`, name === 'tpr' ? 'Sensibilidad (TPR)' : 'FPR']}
+            formatter={(v: number, name: string) => {
+              if (name === 'diagonal') return [null, null]
+              return [`${v.toFixed(1)}%`, name === 'tpr' ? 'Sensibilidad (TPR)' : name]
+            }}
           />
-          <ReferenceLine
-            segment={[{ x: 0, y: 0 }, { x: 100, y: 100 }]}
-            stroke="#64748B" strokeDasharray="4 4" strokeOpacity={0.5}
-            label={{ value: 'Modelo aleatorio', fill: '#64748B', fontSize: 9, position: 'insideTopLeft' }}
-          />
+          <Line type="monotone" dataKey="diagonal" stroke="#64748B" strokeWidth={1}
+            strokeDasharray="5 4" strokeOpacity={0.5} dot={false} name="diagonal" legendType="none" />
           <Area type="monotone" dataKey="tpr" stroke={color} strokeWidth={2} fill="url(#aucGrad)" dot={false} name="tpr" />
-        </AreaChart>
+        </ComposedChart>
       </ResponsiveContainer>
-      <p className="text-text-muted text-[10px] mt-1 text-center">
-        AUC = {auc.toFixed(3)} · Gini = {(2 * auc - 1).toFixed(3)}
-      </p>
+      <div className="flex items-center justify-center gap-4 mt-1 text-[10px] text-text-muted">
+        <span className="flex items-center gap-1.5">
+          <span className="w-4 h-0.5 inline-block rounded" style={{ backgroundColor: color }} />
+          Modelo (AUC = {auc.toFixed(3)})
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="w-4 h-0.5 inline-block rounded bg-text-muted opacity-50" style={{ borderTop: '1px dashed #64748B', backgroundColor: 'transparent' }} />
+          Aleatorio (AUC = 0.500)
+        </span>
+        <span>Gini = {(2 * auc - 1).toFixed(3)}</span>
+      </div>
     </ChartContainer>
   )
 }
